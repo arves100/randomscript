@@ -3,7 +3,7 @@ git push origin :translations/cm-14.1
 git push origin :themes-exp
 git push origin :staging/cm-13.0+r22
 git push origin :staging/cm-12.1
-git push origin :stating/cm-12.0-caf
+git push origin :staging/cm-12.0-caf
 git push origin :stable/cm-13.0-ZNH5Y
 git push origin :stable/cm-13.0-ZNH2KB
 git push origin :stable/cm-13.0-ZNH2K
@@ -11,11 +11,11 @@ git push origin :stable/cm-13.0-ZNH0E
 git push origin :stable/cm-12.1-YOG7D
 git push origin :stable/cm-12.1-YOG4P
 git push origin :stable/cm-12.1-YOG3C
-git push origin :stable/cm-12.1-YNG4N
-git push origin :stable/cm-12.1-YNG3C
-git push origin :stable/cm-12.1-YNG1TA
-git push origin :stable/cm-12.1-YNG1T
-git push origin :stable/cm-12.1-YNG1I
+git push origin :stable/cm-12.0-YNG4N
+git push origin :stable/cm-12.0-YNG3C
+git push origin :stable/cm-12.0-YNG1TA
+git push origin :stable/cm-12.0-YNG1T
+git push origin :stable/cm-12.0-YNG1I
 git push origin :stable/cm-11.0
 git push origin :stable/cm-11.0-XNG3C
 git push origin :stable/cm-11.0-XNG2S
