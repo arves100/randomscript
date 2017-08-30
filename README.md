@@ -1,4 +1,7 @@
 # randomscript
 Some Useless stuff i made
 
-delete_full_tags_lineage.sh | It wipes all the tags in a lineage-cloned repo
+| Script  | Usage
+| ------- | --- 
+| delete_full_tags_lineage.sh | Wipes all tags in a lineageos-cloned repo
+| cpython36pyc-renamer.py | Renames all .cpython-36.pyc files to .pyc
