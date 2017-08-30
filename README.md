@@ -1,5 +1,6 @@
 # randomscript
 Some Useless stuff i made
+
 LICENSE: MIT (Yea, this things are licensed o.O)
 
 | Script  | Usage
