@@ -22,7 +22,7 @@ git push origin :refs/tags/cm-10.1.2
 git push origin :refs/tags/cm-10.1.3-RC1
 git push origin :refs/tags/cm-10.1.3-RC2
 git push origin :refs/tags/cm-10.1.3
-git push origin :refs/tags/cm-10.2-MI1
+git push origin :refs/tags/cm-10.2-M1
 git push origin :refs/tags/cm-10.2.0
 git push origin :refs/tags/cm-10.2.1
 git push origin :refs/tags/cm-10.2.1.1
