@@ -1,6 +1,6 @@
 #!/usr/local/bin/python
 # Created by Arves100 on 05-02-2018 for rewardmetin2
-# Released under MIT license (this shit is licensed o.O)
+# Released under MIT license (this is real o.O)
 #
 
 import os
