@@ -73,6 +73,8 @@ def make_share(base, share, locale):
 	os.system("rm -rf " + base + "/" + share + "/db")
 	
 	os.system("ln -s " + base + "/" + share + "/locale/" + locale + "/quest " + base + "/quest")
+	
+	os.system("ln -s " + base + "/" + share + "/qc " + base + "/" + share + "/" + locale + "/quest/qc")
 
 def clear_rage50k_files(base, share, locale):
 	os.system("rm -rf " + base + "/" + share + "/gamefile")
