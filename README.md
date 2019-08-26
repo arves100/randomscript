@@ -11,3 +11,4 @@ LICENSE: MIT (Yea, this things are licensed o.O)
 | m2_item_list_gen.py | Easy Item_List.txt Generator (Metin2)
 | m2_item_list_gen_v2.py | Updated version of "Easy Item_List.txt Generator for Metin2"
 | utf16test.cpp | UTF16 Table Dump/Test
+| make_sf.py | Python Metin2 serverfile maker
