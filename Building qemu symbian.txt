@@ -1,0 +1,112 @@
+Building qemu-sybmain-svp
+	NOTE: Mingw32 build (under a x64 platform) fails due to errors in cpu-exec.c and arm-softmmu/cpu.h. Perhaps they won't spawn in a pure 32bit build.
+	NOTE2: TAP features ARE NOT SUPPORTED in this emulator, I hope they won't break input/output
+	
+1) Required files
+	mingw-w64-?-gcc mingw-w64-?-SDL mingw-w64-?-expat mingw-w64-?-zlib (Where ? is i686 for 32bit and x86_64 for 64bit)
+
+	Download and extract this file inside anywhere you want in your pc: http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.23-3_win32.zip
+	Extract this archive in the same folder as you extracted the pkg-config archive: https://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.20/glib-dev_2.20.5-1_win32.zip
+	Add to the path the bin directory of the zip you have extracted before, pkg-config is mandatory in native builds.
+	(See https://wiki.qemu.org/Hosts/W32#Native_builds_with_Mingw-w64 for more information)
+
+2) Building libpng
+	NOTE: PLASE UNINSTALL LIBPNG FIRST! (pacman -R mingw-w64-x86_64-libpng), I haven't figured out how to pass libpng without
+		having to remove the one provided in msys, if you do know how, please submit a PR.
+
+	This version of QEmu is not compatible with the last libpng shipped in repo.msys2.org, so we need to build the one
+	that is included in Symbian.
+	
+	Navigate to sf/adapt/qemu/sybmain-qemu-0.9.1-12/libpng-1.2.32
+	type `./configure` and `make install`
+	
+3) Python 2.6
+	Download and install Python 2.6 x64 or extract a zipped archive of Python 2.6 x64 into any folder you want.
+	NOTE: You can use any patch version of Python, I'm using Python 2.6.6)
+	
+	Special note for Python 2.6:
+		Install mingw-w64-?-tools with pacman.
+		If your Python installation does not ship libpython26.a inside Lib folder (like Python 2.6.6 x64 binary)
+		Here's a way of generating that file so we can use it with gcc
+			Copy python26.dll from %SYSTEMROOT%\system32 (or in case, check with a tool like Dependencies the python26.dll that your python.exe is loading) to "Your python installation dir"\libs
+			Type `gendef python26.dll` and `dlltool -v --dllname python26.dll --def python26.def --output-lib libpython26.a`
+			
+	
+3) Patching QEmu
+	Rename the file tap-win32.c to tap-win32.c.bak or remove it.
+	Create a new file called tap-win32.c and paste this content:
+```#include "qemu-common.h"
+#include "net.h"
+#include "sysemu.h"
+
+/* This is dummy becauase tap-win32.c is impossible to compile due to DDK errors */
+
+int tap_win32_init(VLANState *vlan, const char *ifname)
+{
+	
+	return -1;
+}```
+
+	Now open dyngen-exec.h and search this line (35):
+```#ifdef __OpenBSD__
+#include <sys/types.h>
+#else
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;
+// Linux/Sparc64 defines uint64_t```
+
+	And change that to this (as you can see, we added a new if to use stdint definitions if the compiler does support it, this is done
+	to prevent future compilation errors):
+```#ifdef __OpenBSD__
+#include <sys/types.h>
+#elif  (__GNUC__ == 4 && __GNUC_MINOR__ > 4) || __GNUC__ > 4
+#include <stdint.h>
+#else
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;```
+
+	This configure patch is required for mingw32 under 64bit environment as the CPU detection fails,
+	it could not be required in a pure 32bit build. (We are just forcing the cpu check to use i386)
+
+	`cpu="i386"` to line 88
+```  ;;
+  *)
+    cpu="unknown"
+  ;;
+esac
+<--- HERE
+gprof="no"
+sparse="no"
+bigendian="no"```
+
+	Search this line: `PYTHON_LIBS="-L$with_python/lib -lpython26"` and replace it with `PYTHON_LIBS="-L$with_python/libs -lpython26"`
+		We added the folder libs because that's what it should work under windows.
+
+	Search this line: ```if [ -n "$with_python" ] ; then
+  # Hardcoded hack for windows.
+  PYTHON_CFLAGS="-I$with_python/include"
+  PYTHON_LIBS="-L$with_python/libs -lpython26"```
+  
+	Add this after: ```
+  if test "$mingw32" = "yes" ; then
+    if test "$cpu" = "x86_64" ; then
+      CFLAGS="-D MS_WIN64"
+    fi
+  fi```
+  
+  This flag fixes linking issues with Python 2.6 and 64bit Windows versions.
+
+4) Building QEmu
+	Type this to the configure command:
+	Starting from Windows Vista or later, QEmu cannot be installed in the default directory "C:\Program files\qemu", you must pass the --prefix argument and make sure you are writing
+	 to a directory that you don't require administrator rights.
+
+	./configure --target-list=arm-softmmu --with-python="your python installation directory" --audio-drv-list="sdl" --prefix="directory where qemu should be installed"
+	If you have done all the steps correctly, you should see `Python support yes`, `SDL support yes`, `libpng support yes`.
+	Otherwise, check the packages you have installed and if you are using a prebuilt/generated python library that targets your architecture.
+	
+	Finally, type "make install" and let your qemu build shine :)
+	
+Written by Arves100: MIT license, feel free.

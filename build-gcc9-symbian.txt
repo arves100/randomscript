@@ -1,0 +1,8 @@
+../gcc/configure --target=arm-none-symbianelf --without-headers \
+	--enable-languages="c,c++,lto" --enable-poison-system-directories \
+	--enable-lto --with-newlib --enable-long-long \
+	--with-dwarf2 --enable-interwork --enable-tls --enable-multilib \
+	--disable-hosted-libstdcxx --disable-libstdcxx-pch \
+	--disable-option-checking --disable-threads --disable-nls \
+	--disable-win32-registry --disable-libssp --disable-shared \
+	--enable-wchar_t --enable-extra-sgxxlite-multilibs --enable-c99

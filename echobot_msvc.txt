@@ -1,0 +1,35 @@
+Requirements:
+	Microsoft Visual Studio 2019
+	CMake
+
+1. git clone https://github.com/DiscordPP/echo-bot
+Note: remember to git submodule update --init --recursive
+
+2. Download and install OpenSSL from here: https://slproweb.com/products/Win32OpenSSL.html
+Note: The light version does not contain the developer files in order to use it
+
+3. Download and install boost from here: https://www.boost.org/users/download/
+and extract it.
+
+4. Open a Visual Studio command prompt (Start -> search visual studio command prompt -> open it)
+
+5. Go to boost folder with the cmd (cd <folder>)
+
+6. Compile Boost beast (or at least what's required for it)
+If it's your first time compiling boost, first type bootstrap for build Boost.Build.
+
+Then type b2 --with-coroutine --with-filesystem --with-system --with-date_time --with-chrono link=shared
+
+Note: if you are compiling in 64bit add "address-model=64" in the b2 command
+Note 2: At this time discord++ does not support linking against boost static libraries.
+
+7. With cmake, set BOOST_ROOT with the directory of Boost (cmake BOOST_ROOT=<dir>) or with cmake-gui
+
+8. Open the target folder and build the solution as usual.
+
+You can now use echo_bot. 
+
+Make sure to copy the shared dlls from Boost stage folder to echo_bot exe folder
+
+Make also sure to copy OpenSSL Win32 DLLs from your OpenSSL installation directory to echo_bot exe folder
+(NOTE: Required only if you don't install OpenSSL DLLs inside Windows binary folder)
