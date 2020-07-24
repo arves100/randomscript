@@ -1,0 +1,31 @@
+Note FreeDVDBoot 3.04M
+
+                    /* FreeDVDBoot */
+    getDiscData(((uint)DAT_016c8ccc + (uint)DAT_016c8cce + (uint)DAT_016c8cd0) * 8,0x16c8cd4);
+	
+ Zona di controllo: 0x16c8cd4 ~ 0x1848CBC‬
+ 
+Pos: 16c8cd4
+
+! Funzione -> DAT qualcosa (vicino al range + bla bla)
+code xd xd xd 
+      (*(code *)(&PTR_LAB_0095ace8)[DAT_016cf74a])(puVar6 + ((uint)DAT_016cf741 - 1) * 8);
+
+        0023faac 21 18 76 00 	   addu       v1,v1,s6
+
+> Dump start: PTR_LAB_0095ace8 to PTR_LAB_0095ace8 + 0xFFFF *4 = 0x99ACE8
+
+
+uVar1 = getBufferInternal(param_1,uVar3,param_2,param_3,param_4,param_5);
+
+  if (*(int *)(&DAT_016ced54 + DAT_016ced48 * 4) == 0) {
+    lVar3 = getBuffer(pcVar5,0,0x16cad40,1,0);
+    DAT_016ced40 = (int)lVar3;
+	
+before 0x16ce444: 0x44 e4 6c 01
+
+
+3.00E PORTING test
+0154FC00 : DVDVIDEO-VMG
+sd: 22e224
+ra: 224ee0 (caller)

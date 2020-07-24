@@ -1,0 +1,7 @@
+DCSPRITE10 FileFormat
+ 4 byte Number of sprites
+ Width block (4 byte each) 
+ Height block (4 byte each)
+ 4 byte total image size
+ Offset block (4 byte each)
+ Image block (2 byte each)
