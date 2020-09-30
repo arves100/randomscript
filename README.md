@@ -19,3 +19,4 @@ LICENSE: MIT (Yea, this things are licensed o.O)
 | CodeWarrior complete FlexLM analysis.txt | Unfinished analysis of CodeWarrior RVDS 2.2
 | echobot_msvc.txt | Old tutorial for building Discord++'s echobot under MSVC
 | ifdefextract.py | Exports #ifdef from any source
+| appx.c | Remove appx packages without using powershell
