@@ -1,0 +1,169 @@
+Configurazione VPS
+
+GRUB:
+menuentry "FreeBSD ZFS Loader" {
+insmod zfs
+insmod bsd
+search -s -l zfsroot  # zfsroot=the name of your root pool
+kfreebsd /@/boot/zfsloader
+}
+
+Dischi:
+1: 2MB (BIOS Boot per Grub)
+2: 2GB (FreeBSD Boot)
+3: 120GB (FreeBSD Root)
+4: 500GB (MySQL Root /var/db/mysql)
+5: 400GB (File Server Root /home/srv1)
+6: 300GB (Backup Root /backupdata)
+7: 120GB (FreeBSD Swap/ZFS)
+
+fdisk /dev/sda <<EOF
+g
+n
+1
+
++2M
+n
+2
+
++2G
+n
+3
+
++120G
+n
+4
+
++500G
+n
+5
+
++400G
+n
+6
+
++300G
+n
+7
+
++120G
+t
+1
+4
+t
+2
+33
+t
+3
+36
+t
+4
+36
+t
+5
+36
+t
+6
+36
+t
+7
+34
+w
+EOF
+
+zpool create -m (mountpoint) -R (mountpoint tmp) (pool) (dev)
+zfs create (x) -o mountpoint=(y) -o compression=on/off -o setuid=off/on -o exec=on/off
+
+BootFS:
+zpool create -d -O mountpoint=/ -R /mnt bpool /dev/sda2
+
+RootFS:
+zpool create -o ashift=12 \
+    -O acltype=posixacl -O canmount=off -O compression=lz4 \
+    -O dnodesize=auto -O normalization=formD -O relatime=on -O xattr=sa \
+    -O mountpoint=/ -R /mnt rpool /dev/sda3
+
+zfs create -o canmount=off -o mountpoint=none rpool/ROOT
+zfs create -o mountpoint=/ rpool/ROOT/default
+zfs mount rpool/ROOT/default
+zfs create -o canmount=off -o mountpoint=none bpool/BOOT
+zfs create -o canmount=noauto -o mountpoint=/boot bpool/BOOT/default
+zfs mount bpool/BOOT/default
+
+zroot (partizione 3)
+
+zfs create -o canmount=off rpool/usr
+zfs create -o compression=on -o setuid=off rpool/usr/ports
+zfs create -o compression=gzip-9 -o exec=off -o setuid=off rpool/usr/ports/distfiles
+zfs create -o compression=on -o exec=off -o setuid=off rpool/usr/ports/packages
+zfs create rpool/usr/local
+zfs create -o compression=on rpool/usr/src
+zfs create -o compression=gzip-9 rpool/usr/doc
+zfs create -o canmount=off  rpool/var
+zfs create -o canmount=off  rpool/var/lib
+zfs create -o exec=off -o setuid=off -o compression=gzip-9 rpool/var/mail
+zfs create -o exec=off -o setuid=off -o compression=gzip-9 rpool/var/log
+zfs create -o exec=off -o setuid=off rpool/var/db
+zfs create -o exec=on -o setuid=off -o compression=gzip rpool/var/db/pkg
+zfs create -o exec=off -o setuid=off rpool/var/run
+zfs create -o exec=off -o setuid=off rpool/var/tmp
+zfs create -o exec=off -o setuid=off rpool/tmp
+zfs create rpool/opt
+zfs create rpool/home
+cd /mnt
+chmod 1777 tmp var/tmp
+
+#zpool set bootfs=bpool/default bpool
+
+zmysql (partizione 4)
+zfs umount rpool/var/db/pkg
+rm -rf /mnt/var/db/*
+zpool create -o ashift=12 -O acltype=posixacl -O canmount=off -O compression=lz4 -O normalization=formD -O relatime=on -O xattr=sa -R /mnt -O mountpoint=/var/db zmysql /dev/sda4
+zfs create -o exec=off -o setuid=off zmysql/mysql
+zfs mount rpool/var/db/pkg
+
+zbackup (partizione 6)
+zpool create -o ashift=12 -O acltype=posixacl -O canmount=off -O compression=lz4 -O normalization=formD -O relatime=on -O xattr=sa -R /mnt -O mountpoint=/backupdata zbackup /dev/sda6
+zfs create -o exec=off -o setuid=off -o compression=on -o mountpoint=/backupdata zbackup/DATA
+
+zswap (partizione 7)
+zpool create -R /tmp zswap -O canmount=off -O mountpoint=none /dev/sda7
+zfs create -o mountpoint=none -o org.freebsd:swap=on \
+                    -o checksum=off \
+                    -o compression=off \
+                    -o dedup=off \
+                    -o sync=disabled \
+                    -o primarycache=none \
+                    zswap/SWAP
+
+zcore (partizione 5)
+zpool create -o ashift=12 -O acltype=posixacl -O canmount=off -O compression=lz4 -O normalization=formD -O relatime=on -O xattr=sa -R /mnt -O mountpoint=/home/s3ll_svfiles zcore /dev/sda5
+zfs create -o setuid=off zcore/main
+zfs create -o setuid=off zcore/main/srv1
+zfs create -o setuid=off -o compression=on zcore/main/srv1/logs
+
+Installazione di FreeBSD:
+mkdir /mnt/freebsdarc
+cd /mnt/freebsdarc
+wget https://download.freebsd.org/ftp/releases/amd64/amd64/12.1-RELEASE/base.txz
+wget https://download.freebsd.org/ftp/releases/amd64/amd64/12.1-RELEASE/kernel.txz
+wget https://download.freebsd.org/ftp/releases/amd64/amd64/12.1-RELEASE/src.txz
+wget https://download.freebsd.org/ftp/releases/amd64/amd64/12.1-RELEASE/lib32.txz
+tar -C /mnt -xf base.txz
+tar -C /mnt -xf kernel.txz
+tar -C /mnt -xf src.txz
+tar -C /mnt -xf lib32.txz
+
+cd /mnt/boot
+echo 'zfs_load="YES"' > loader.conf
+echo 'vfs.root.mountfrom="zfs:rpool"' >> loader.conf
+echo 'zfs_enable="YES"' > ../etc/rc.conf
+
+Grub setup:
+grub-install --target=i386-pc --modules=bsd.mod --modules=zfs.mod --modules=zfsinfo.mod --boot-directory=/mnt/boot --root-directory=/mnt /dev/sda
+#grub-mkconfig -o (mount grub2...)/grub/grub.cfg
+
+
+REF : https://forums.freebsd.org/threads/installing-freebsd-manually-no-installer.63201/
+REF : https://openzfs.github.io/openzfs-docs/Getting%20Started/Ubuntu/Ubuntu%2018.04%20Root%20on%20ZFS.html
+REF : https://forums.freebsd.org/threads/grub2-has-no-zfs-support.25164/#post-194477
