@@ -1,0 +1,174 @@
+
+Types
+=====
+ArtToolInfo: 2 (REFERENCE)
+  FromArtToolName: 8 (TEXT)
+  ArtToolMajorRevision: 19 (INT32)
+  ArtToolMinorRevision: 19 (INT32)
+  UnitsPerMeter: 10 (REAL32)
+  Origin: 10 (REAL32) [3]
+  RightVector: 10 (REAL32) [3]
+  UpVector: 10 (REAL32) [3]
+  BackVector: 10 (REAL32) [3]
+ExporterInfo: 2 (REFERENCE)
+  ExporterName: 8 (TEXT)
+  ExporterMajorRevision: 19 (INT32)
+  ExporterMinorRevision: 19 (INT32)
+  ExporterCustomization: 19 (INT32)
+  ExporterBuildNumber: 19 (INT32)
+FromFileName: 8 (TEXT)
+Textures: 4 (ARRAY OF REFERENCES)
+  FromFileName: 8 (TEXT)
+  TextureType: 19 (INT32)
+  Width: 19 (INT32)
+  Height: 19 (INT32)
+  Encoding: 19 (INT32)
+  SubFormat: 19 (INT32)
+  Layout: 1 (INLINE)
+    BytesPerPixel: 19 (INT32)
+    ShiftForComponent: 19 (INT32) [4]
+    BitsForComponent: 19 (INT32) [4]
+  Images: 3 (POINTER)
+    MIPLevels: 3 (POINTER)
+      Stride: 19 (INT32)
+      Pixels: 3 (POINTER)
+        UInt8: 12 (UINT8)
+  ExtendedData: 5 (VARIANT REFERENCE)
+Materials: 4 (ARRAY OF REFERENCES)
+  Name: 8 (TEXT)
+  Maps: 3 (POINTER)
+    Usage: 8 (TEXT)
+    Map: 2 (REFERENCE)
+  Texture: 2 (REFERENCE)
+  ExtendedData: 5 (VARIANT REFERENCE)
+Skeletons: 4 (ARRAY OF REFERENCES)
+  Name: 8 (TEXT)
+  Bones: 3 (POINTER)
+    Name: 8 (TEXT)
+    ParentIndex: 19 (INT32)
+    Transform: 9 (TRANSFORM)
+    InverseWorldTransform: 10 (REAL32) [16]
+    LightInfo: 2 (REFERENCE)
+      ExtendedData: 5 (VARIANT REFERENCE)
+    CameraInfo: 2 (REFERENCE)
+      ExtendedData: 5 (VARIANT REFERENCE)
+    ExtendedData: 5 (VARIANT REFERENCE)
+VertexDatas: 4 (ARRAY OF REFERENCES)
+  Vertices: 7 (REF TO VARIANT ARRAY)
+  VertexComponentNames: 3 (POINTER)
+    String: 8 (TEXT)
+  VertexAnnotationSets: 3 (POINTER)
+    Name: 8 (TEXT)
+    VertexAnnotations: 7 (REF TO VARIANT ARRAY)
+    IndicesMapFromVertexToAnnotation: 19 (INT32)
+    VertexAnnotationIndices: 3 (POINTER)
+      Int32: 19 (INT32)
+TriTopologies: 4 (ARRAY OF REFERENCES)
+  Groups: 3 (POINTER)
+    MaterialIndex: 19 (INT32)
+    TriFirst: 19 (INT32)
+    TriCount: 19 (INT32)
+  Indices: 3 (POINTER)
+  Indices16: 3 (POINTER)
+    Int16: 15 (INT16)
+  VertexToVertexMap: 3 (POINTER)
+  VertexToTriangleMap: 3 (POINTER)
+  SideToNeighborMap: 3 (POINTER)
+  BonesForTriangle: 3 (POINTER)
+  TriangleToBoneIndices: 3 (POINTER)
+  TriAnnotationSets: 3 (POINTER)
+    Name: 8 (TEXT)
+    TriAnnotations: 7 (REF TO VARIANT ARRAY)
+    IndicesMapFromTriToAnnotation: 19 (INT32)
+    TriAnnotationIndices: 3 (POINTER)
+Meshes: 4 (ARRAY OF REFERENCES)
+  Name: 8 (TEXT)
+  PrimaryVertexData: 2 (REFERENCE)
+  MorphTargets: 3 (POINTER)
+    ScalarName: 8 (TEXT)
+    VertexData: 2 (REFERENCE)
+  PrimaryTopology: 2 (REFERENCE)
+  MaterialBindings: 3 (POINTER)
+    Material: 2 (REFERENCE)
+  BoneBindings: 3 (POINTER)
+    BoneName: 8 (TEXT)
+    OBBMin: 10 (REAL32) [3]
+    OBBMax: 10 (REAL32) [3]
+    TriangleIndices: 3 (POINTER)
+  ExtendedData: 5 (VARIANT REFERENCE)
+Models: 4 (ARRAY OF REFERENCES)
+  Name: 8 (TEXT)
+  Skeleton: 2 (REFERENCE)
+  InitialPlacement: 9 (TRANSFORM)
+  MeshBindings: 3 (POINTER)
+    Mesh: 2 (REFERENCE)
+TrackGroups: 4 (ARRAY OF REFERENCES)
+  Name: 8 (TEXT)
+  VectorTracks: 3 (POINTER)
+    Name: 8 (TEXT)
+    Dimension: 19 (INT32)
+    ValueCurve: 1 (INLINE)
+      CurveData: 5 (VARIANT REFERENCE)
+  TransformTracks: 3 (POINTER)
+    Name: 8 (TEXT)
+    PositionCurve: 1 (INLINE)
+    OrientationCurve: 1 (INLINE)
+    ScaleShearCurve: 1 (INLINE)
+  TransformLODErrors: 3 (POINTER)
+    Real32: 10 (REAL32)
+  TextTracks: 3 (POINTER)
+    Name: 8 (TEXT)
+    Entries: 3 (POINTER)
+      TimeStamp: 10 (REAL32)
+      Text: 8 (TEXT)
+  InitialPlacement: 9 (TRANSFORM)
+  AccumulationFlags: 19 (INT32)
+  LoopTranslation: 10 (REAL32) [3]
+  PeriodicLoop: 2 (REFERENCE)
+    Radius: 10 (REAL32)
+    dAngle: 10 (REAL32)
+    dZ: 10 (REAL32)
+    BasisX: 10 (REAL32) [3]
+    BasisY: 10 (REAL32) [3]
+    Axis: 10 (REAL32) [3]
+  RootMotion: 2 (REFERENCE)
+  ExtendedData: 5 (VARIANT REFERENCE)
+Animations: 4 (ARRAY OF REFERENCES)
+  Name: 8 (TEXT)
+  Duration: 10 (REAL32)
+  TimeStep: 10 (REAL32)
+  Oversampling: 10 (REAL32)
+  TrackGroups: 4 (ARRAY OF REFERENCES)
+ExtendedData: 5 (VARIANT REFERENCE)
+
+File Info
+==========
+From File Name:
+Textures Count:      0
+Materials Count:     0
+Skeletons Count:     0
+VertexDatas Count:   5
+TriTopologies Count: 5
+Meshes Count:        5
+Models Count:        0
+TrackGroups Count:   0
+Animations Count:    0
+
+Art Tool Info
+=============
+Name:            3D Studio MAX
+Major Revision:  7
+Minor Revision:  0
+Units per meter: 39.3701
+Origin:          [0, 0, 0]
+Right Vector:    [1, 0, 0]
+Up Vector:       [0, 0, 1]
+Back Vector:     [0, -1, 0]
+
+Exporter Info
+=============
+Name:           Granny Standard Exporter, SDK version 2.6.0.10
+Major Revision: 2
+Minor Revision: 6
+Customization:  0
+Build Number:   10
